@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>分成五等份的圆</title>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="800" height="800"></canvas>
+
+    <script>
+      const canvas = document.getElementById('myCanvas')
+      const ctx = canvas.getContext('2d')
+
+      // 计算圆心坐标
+      const centerX = canvas.width / 2
+      const centerY = canvas.height / 2
+
+      // 初始半径
+      let radius = 155
+      let originalRadius = 155 // 用于保存原始半径值
+
+      // 绘制红色线段组成一个圆
+      let angle = 0 // 起始角度为0度
+
+      let decreaseRadius = false // 是否减小半径的标志
+
+      function drawNextLine() {
+        if (angle < 360) {
+          // 将角度转换为弧度
+          const radians = (angle * Math.PI) / 180
+          // 计算线段的起始坐标
+          const startX = centerX + radius * Math.cos(radians)
+          const startY = centerY + radius * Math.sin(radians)
+
+          // 计算线段的结束坐标
+          const endX = centerX + radius * Math.cos(radians)
+          const endY = centerY + radius * Math.sin(radians)
+
+          // 绘制红色线段
+          ctx.beginPath()
+          ctx.moveTo(startX, startY)
+          ctx.lineTo(endX, endY)
+          ctx.strokeStyle = 'red'
+          ctx.stroke()
+
+          // 增加角度，每次增加1度
+          angle += 1
+
+          // 如果角度是72的倍数，减小半径到120
+          if (angle % 72 === 0) {
+            radius -= 120
+          } else {
+            // 否则恢复半径到初始值
+            radius = 155
+          }
+          // 使用requestAnimationFrame来实现动画效果
+          drawNextLine()
+        }
+      }
+      drawNextLine()
+    </script>
+  </body>
+</html>
